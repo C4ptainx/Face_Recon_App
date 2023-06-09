@@ -1,4 +1,4 @@
-name: app
+name: Face_Recon
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -62,6 +62,13 @@ flutter:
   assets:
       - assets/logo.png
       - assets/diseño.png
+      - assets/diseño1.png
+      - assets/diseño2.png
+      - assets/diseño3.png
+      - assets/diseño4.png
+      - assets/diseño5.png
+      - assets/diseño6.png
+      - assets/usuarios.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
