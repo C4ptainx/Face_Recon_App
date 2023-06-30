@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app/src/pages/Registrer.dart';
-//import 'package:app/src/pages/User.dart';
+import 'package:app/src/pages/Actualizar.dart';
 import 'package:http/http.dart' as http;
 //import 'package:shared_preferences/shared_preferences.dart';
 
@@ -79,29 +79,6 @@ class _LoginScreenState extends State<LoginScreen>{
 /*"email":"pedro@utc.edu.mx",
     "password":"pedro123456",*/
 
-/*Future<void> guardar(email) async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('email', email);
-}
-
-
-Future<void> mostrar() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  email = (await prefs.getString("email"))!; 
-  //print(email);
-  if(email != ''){
-    // ignore: unnecessary_null_comparison
-    if(email != null){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => home() ));
-    }
-  }
-}
-@override
-void initState(){
-  super.initState();
-  mostrar();
-  
-}*/
 bool _passwordVisible = false;
   Widget buildEmail(){
   return Column(
@@ -234,7 +211,9 @@ Widget buildForgotpasswd(){
   return Container (
     alignment: Alignment.centerRight,
     child: TextButton(
-      onPressed: () => passwd(),
+      onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> Actualizar()));
+      },
       child: Text("¿Olvidaste tu contraseña?", 
         style: TextStyle(
           color: Colors.white, 

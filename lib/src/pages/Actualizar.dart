@@ -4,186 +4,17 @@ import 'package:flutter/services.dart';
 import 'package:app/src/pages/Login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-class passwd extends StatefulWidget{
+
+class Actualizar extends StatefulWidget{
   @override
-  _passwdState createState() => _passwdState();
+  _ActualizarState createState() => _ActualizarState();
 
 }
 
-class _passwdState extends State<passwd>{
+class _ActualizarState extends State<Actualizar>{
   bool isRememberMe = false;
 
-  Widget buildusername(){
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text("",
-       style: TextStyle(
-        color: Colors.white, 
-        fontSize: 16,
-        fontWeight: FontWeight.bold
-        ),
-      ),
-      SizedBox(height: 10,),
-      Container(
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-          color: Colors.transparent, 
-          borderRadius:BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 6,
-              offset: Offset(0, 2)
-            )
-          ]
-        ),
-        height: 60,
-        child: TextField(
-          onChanged: (value) => {name = value},
-          keyboardType: TextInputType.name,
-          style: TextStyle(
-            color: Colors.white
-          ),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.white
-                ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(15)
-                )
-              ),
-            contentPadding: EdgeInsets.only(top: 14),
-            prefixIcon: Icon(
-              Icons.person,
-              color: Color(0xff455a64),
-            ),
-            hintText: "Nombre y Apellidos",
-            hintStyle: TextStyle(
-              color: Colors.white60
-            )
-          ),
-        ),
-      )
-    ],
-  );
-}
-
-Widget buildespecialidad(){
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text("",
-       style: TextStyle(
-        color: Colors.white, 
-        fontSize: 16,
-        fontWeight: FontWeight.bold
-        ),
-      ),
-      SizedBox(height: 10,),
-      Container(
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-          color: Colors.transparent, 
-          borderRadius:BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 6,
-              offset: Offset(0, 2)
-            )
-          ]
-        ),
-        height: 60,
-        child: TextField(
-          onChanged: (value) => {especialidad = value},
-          keyboardType: TextInputType.name,
-          style: TextStyle(
-            color: Colors.white
-          ),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.white
-                ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(15)
-                )
-              ),
-            contentPadding: EdgeInsets.only(top: 14),
-            prefixIcon: Icon(
-              Icons.code_outlined,
-              color: Color(0xff455a64),
-            ),
-            hintText: "Especialidad",
-            hintStyle: TextStyle(
-              color: Colors.white60
-            )
-          ),
-        ),
-      )
-    ],
-  );
-}
-
-Widget buildEmail(){
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text("", 
-        style: TextStyle(
-          color: Colors.white, 
-          fontSize: 16,
-          fontWeight: FontWeight.bold
-        ),
-      ),
-      SizedBox(height: 10,),
-      Container(
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-          color: Colors.transparent, 
-          borderRadius:BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 6,
-              offset: Offset(0, 2)
-            )
-          ]
-        ),
-        height: 60,
-        child: TextField(
-          onChanged: (value) => {email = value},
-          keyboardType: TextInputType.emailAddress,
-          style: TextStyle(
-            color: Colors.white
-          ),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.white
-                ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(15)
-                )
-              ),
-            contentPadding: EdgeInsets.only(top: 14),
-            prefixIcon: Icon(
-              Icons.email,
-              color: Color(0xff455a64),
-            ),
-            hintText: "Correo",
-            hintStyle: TextStyle(
-              color: Colors.white60
-            )
-          ),
-        ),
-      )
-    ],
-  );
-}
-
+ 
 Widget buildPassword(){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -321,87 +152,79 @@ Widget buildconfirm(){
   );
 }
 
-Widget buildRegisterBtn(){
-  return Container(
-    padding: EdgeInsets.symmetric(vertical: 25),
-    width: double.infinity,
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        primary: Colors.deepPurpleAccent.shade700,
-        elevation: 2, 
-        padding: EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+Widget buildRequisitos() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'Requisitos de contraseña:',
+        style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold, color: Colors.white),
       ),
-      onPressed: () async {
-        main();
-        
-      },
-      child: Text("Registrar",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-        ), 
+      SizedBox(height: 8),
+      Row(
+        children: [
+          Icon(Icons.check_circle, color: Colors.green),
+          SizedBox(width: 8),
+          Text('Al menos 8 caracteres',
+        style: TextStyle( color: Colors.white),),
+        ],
       ),
-    ),
+      SizedBox(height: 4),
+      Row(
+        children: [
+          Icon(Icons.check_circle, color: Colors.green),
+          SizedBox(width: 8),
+          Text('Al menos una letra mayúscula',
+        style: TextStyle( color: Colors.white),),
+        ],
+      ),
+      SizedBox(height: 4),
+      Row(
+        children: [
+          Icon(Icons.check_circle, color: Colors.green),
+          SizedBox(width: 8),
+          Text('Al menos un número',
+        style: TextStyle( color: Colors.white),),
+        ],
+      ),
+      SizedBox(height: 4),
+      Row(
+        children: [
+          Icon(Icons.check_circle, color: Colors.green),
+          SizedBox(width: 8),
+          Text('Al menos un carácter especial',
+        style: TextStyle( color: Colors.white),),
+        ],
+      ),
+      Divider(),
+    ],
   );
 }
 
-Widget buildlogin(){
-  return GestureDetector(
-    child: TextButton(
-      child: Text("¿Ya eres usuario?, Inicar sesion",
-        style: TextStyle(
-          color: Colors.white
-        ),
-      ),
-      onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen()));
-      },
-    ),
-  );
-}
 bool _passwordVisible = false;
 bool _password2Visible = false;
 
-  var name = "";
-  var especialidad = "";
-  var email = "";
-  var password = "";
-  var password2 = "";
+var password = "";
+var password2 = "";
 
-/*
- 
-  email: gonzalo@edu.utc.mx
-  password: gonzalo2023
-  
-    email: osvaldo@edu.utc.mx
-  password: osvaldo2023
-
- */
-  main() async {
+main() async {
     var headers = {"Content-Type": "application/json", "Accept" : "application/json"};
     var request = http.Request(
       'POST',
       Uri.parse(
-        "https://backend-face.onrender.com/api/user/register/"
+        "https://backend-face.onrender.com/api/user/changepassword/"
       ) 
     );
     request.body = json.encode(
       {
-        "name":"$name",
-        "especialidad":"$especialidad",
-        "email":"$email",
         "password":"$password",
         "password2":"$password2",
-        "tc":"True",
       }
     );
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 201){
+    if (response.statusCode == 200){
 
      // guardar(email);
       Navigator.push(context, MaterialPageRoute(builder: (context) =>  LoginScreen()));//print(await response.stream.bytesToString());
@@ -419,7 +242,7 @@ bool _password2Visible = false;
             title: Text("Error",
              style: TextStyle(color: Colors.white),
             ),
-            content: Text("Error al registrar", 
+            content: Text("Error al cambiar contraseña", 
              style: TextStyle(color: Colors.white),
             ),
             actions: <Widget>[
@@ -471,7 +294,7 @@ bool _password2Visible = false;
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(
                   horizontal: 35,
-                  vertical: 25
+                  vertical: 45
                 ),
                  child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -481,22 +304,19 @@ bool _password2Visible = false;
                         left: 25,
                       )
                     ),
-                    Text("Bienvenido", 
+                    Text("Cambiar Contraseña", 
                       style: TextStyle(
                         color: Colors.white, 
                         fontSize: 35, 
                         fontWeight: FontWeight.bold
                       ),
                     ),
-                    SizedBox(height: 10),
-                        buildusername(),
-                        buildespecialidad(),
-                        buildEmail(),
+                    SizedBox(height: 100),
                         buildPassword(),
-                        buildconfirm(),
                     SizedBox(height: 40),
-                        buildRegisterBtn(),
-                        buildlogin()
+                      buildRequisitos(),
+                      buildconfirm()
+                       
                   ]
                 ),
                ),
