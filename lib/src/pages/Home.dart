@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/src/pages/Login.dart';
 import 'package:app/src/pages/User.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:app/data/Logout.dart';
 
 class home extends StatefulWidget{
@@ -102,6 +103,15 @@ class _homeState extends State<home>{
    
 
   }
+  // Función para realizar el logout
+Future<void> logout(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('token'); // Elimina el token del almacenamiento local
+  // Opcional: Realizar otras tareas de limpieza o redireccionar a la pantalla de inicio de sesión
+  Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
+  (route) => false,
+);
+}
 
   @override
   Widget build (BuildContext context){
@@ -213,7 +223,7 @@ class _homeState extends State<home>{
               ),
               leading: Icon(Icons.logout, color: Colors.white, size: 35),
               onTap: () {
-                main();
+                logout(context);
               },
             ),
           ],

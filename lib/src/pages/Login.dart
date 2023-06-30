@@ -15,7 +15,7 @@ class LoginScreen extends StatefulWidget{
 
 class _LoginScreenState extends State<LoginScreen>{
   bool isRememberMe = false;
-var email = "";
+  var email = "";
   var password = "";
 
 
@@ -102,7 +102,7 @@ void initState(){
   mostrar();
   
 }*/
-
+bool _passwordVisible = false;
   Widget buildEmail(){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,8 +188,8 @@ Widget buildPassword(){
         ),
         height: 60,
         child: TextField(
-          onChanged: (value) => {password = value},
-         obscureText: true,
+         onChanged: (value) => {password = value},
+          obscureText: !_passwordVisible,
           style: TextStyle(
             color: Colors.white
           ),
@@ -207,6 +207,18 @@ Widget buildPassword(){
               Icons.lock,
               color: Color(0xff455a64),
             ),
+             suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                 _passwordVisible = !_passwordVisible;
+                });
+              },
+              child: Icon(
+                _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Color(0xff455a64),
+              ),
+            ),
+
             hintText: "Contraseña",
             hintStyle: TextStyle(
               color: Colors.white60

@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app/src/pages/Login.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 class passwd extends StatefulWidget{
   @override
   _passwdState createState() => _passwdState();
@@ -39,9 +40,10 @@ class _passwdState extends State<passwd>{
         ),
         height: 60,
         child: TextField(
+          onChanged: (value) => {name = value},
           keyboardType: TextInputType.name,
           style: TextStyle(
-            color: Colors.black87
+            color: Colors.white
           ),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -95,9 +97,10 @@ Widget buildespecialidad(){
         ),
         height: 60,
         child: TextField(
+          onChanged: (value) => {especialidad = value},
           keyboardType: TextInputType.name,
           style: TextStyle(
-            color: Colors.black87
+            color: Colors.white
           ),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -151,9 +154,10 @@ Widget buildEmail(){
         ),
         height: 60,
         child: TextField(
+          onChanged: (value) => {email = value},
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(
-            color: Colors.black87
+            color: Colors.white
           ),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -207,9 +211,10 @@ Widget buildPassword(){
         ),
         height: 60,
         child: TextField(
-         obscureText: true,
+          onChanged: (value) => {password = value},
+         obscureText: !_passwordVisible,
           style: TextStyle(
-            color: Colors.black87
+            color: Colors.white
           ),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -224,7 +229,19 @@ Widget buildPassword(){
             prefixIcon: Icon(
               Icons.lock,
               color: Color(0xff455a64),
+            ), 
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                 _passwordVisible = !_passwordVisible;
+                });
+              },
+              child: Icon(
+                _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Color(0xff455a64),
+              ),
             ),
+
             hintText: "Contraseña",
             hintStyle: TextStyle(
               color: Colors.white60
@@ -263,9 +280,10 @@ Widget buildconfirm(){
         ),
         height: 60,
         child: TextField(
-         obscureText: true,
+          onChanged: (value) => {password2 = value},
+         obscureText: !_password2Visible,
           style: TextStyle(
-            color: Colors.black87
+            color: Colors.white
           ),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -281,6 +299,17 @@ Widget buildconfirm(){
               Icons.lock,
               color: Color(0xff455a64),
             ),
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _password2Visible = !_password2Visible;
+                });
+              },
+              child: Icon(
+                  _password2Visible ? Icons.visibility : Icons.visibility_off,
+                  color: Color(0xff455a64),
+                ),
+              ),
             hintText: "Confirmar contraseña",
             hintStyle: TextStyle(
               color: Colors.white60
@@ -305,7 +334,10 @@ Widget buildRegisterBtn(){
           borderRadius: BorderRadius.circular(15),
         ),
       ),
-      onPressed:  () => print("login pressed"),
+      onPressed: () async {
+        main();
+        
+      },
       child: Text("Registrar",
         style: TextStyle(
           color: Colors.white,
@@ -330,6 +362,80 @@ Widget buildlogin(){
     ),
   );
 }
+bool _passwordVisible = false;
+bool _password2Visible = false;
+
+  var name = "";
+  var especialidad = "";
+  var email = "";
+  var password = "";
+  var password2 = "";
+
+/*
+  name: Gonzalo Ivan Riego
+  especialidad: Ing. Sistemas Computacionales
+  email: gonzalo@edu.utc.mx
+  password: gonzalo2023
+  password2: gonzalo2023
+ */
+  main() async {
+    var headers = {"Content-Type": "application/json", "Accept" : "application/json"};
+    var request = http.Request(
+      'POST',
+      Uri.parse(
+        "https://backend-face.onrender.com/api/user/register/"
+      ) 
+    );
+    request.body = json.encode(
+      {
+        "name":"$name",
+        "especialidad":"$especialidad",
+        "email":"$email",
+        "password":"$password",
+        "password2":"$password2",
+        "tc":"True",
+      }
+    );
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 201){
+
+     // guardar(email);
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  LoginScreen()));//print(await response.stream.bytesToString());
+    
+    // Navigator.push(context, MaterialPageRoute(builder: ((context) => home())));
+    }else{
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30)
+            ),
+            backgroundColor: Colors.blueGrey.shade800,
+            title: Text("Error",
+             style: TextStyle(color: Colors.white),
+            ),
+            content: Text("Error al registrar", 
+             style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+                child: Text("Cerrar", 
+                 style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          );
+        }
+      );
+    }
+  }
+
 
 @override
   Widget build(BuildContext context){
