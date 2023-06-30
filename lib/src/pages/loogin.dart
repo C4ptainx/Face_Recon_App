@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:Face_Recon/src/pages/Registrer.dart';
+import 'package:app/src/pages/Registrer.dart';
 
 class LoginPage extends StatefulWidget {
   static String id = 'login';

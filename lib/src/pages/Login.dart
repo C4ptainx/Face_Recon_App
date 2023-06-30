@@ -1,9 +1,12 @@
+import 'dart:convert';
+import 'package:app/src/pages/Home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:Face_Recon/src/pages/Registrer.dart';
-import 'package:Face_Recon/src/pages/Home.dart';
+import 'package:app/src/pages/Registrer.dart';
 //import 'package:app/src/pages/User.dart';
+import 'package:http/http.dart' as http;
+//import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget{
   @override
@@ -12,6 +15,93 @@ class LoginScreen extends StatefulWidget{
 
 class _LoginScreenState extends State<LoginScreen>{
   bool isRememberMe = false;
+var email = "";
+  var password = "";
+
+
+  main() async {
+    var headers = {"Content-Type": "application/json", "Accept" : "application/json"};
+    var request = http.Request(
+      'POST',
+      Uri.parse(
+        //"https://face-recon.onrender.com/api/login"
+        "https://backend-face.onrender.com/api/user/login/"
+      ) 
+    );
+    request.body = json.encode(
+      {
+        "email":"$email",
+        "password":"$password",
+      }
+    );
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200){
+
+     // guardar(email);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => home() ));//print(await response.stream.bytesToString());
+    
+    // Navigator.push(context, MaterialPageRoute(builder: ((context) => home())));
+    }else{
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30)
+            ),
+            backgroundColor: Colors.blueGrey.shade800,
+            title: Text("Error",
+             style: TextStyle(color: Colors.white),
+            ),
+            content: Text("Su correo electronico o su contraseña son incorrectos", 
+             style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+                child: Text("Cerrar", 
+                 style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          );
+        }
+      );
+    }
+  }
+  
+//email: admin@edu.utc.com
+//password: admin1234
+/*"email":"pedro@utc.edu.mx",
+    "password":"pedro123456",*/
+
+/*Future<void> guardar(email) async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('email', email);
+}
+
+
+Future<void> mostrar() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  email = (await prefs.getString("email"))!; 
+  //print(email);
+  if(email != ''){
+    // ignore: unnecessary_null_comparison
+    if(email != null){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => home() ));
+    }
+  }
+}
+@override
+void initState(){
+  super.initState();
+  mostrar();
+  
+}*/
 
   Widget buildEmail(){
   return Column(
@@ -40,9 +130,10 @@ class _LoginScreenState extends State<LoginScreen>{
         ),
         height: 60,
         child: TextField(
+          onChanged: (value) => {email = value},
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(
-            color: Colors.black87
+            color: Colors.white
           ),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -63,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen>{
               color: Colors.white60
             )
           ),
+           
         ),
       )
     ],
@@ -96,9 +188,10 @@ Widget buildPassword(){
         ),
         height: 60,
         child: TextField(
+          onChanged: (value) => {password = value},
          obscureText: true,
           style: TextStyle(
-            color: Colors.black87
+            color: Colors.white
           ),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -182,17 +275,20 @@ Widget buildLoginBtn(){
           borderRadius: BorderRadius.circular(15),
         ),
       ),
-      
-      onPressed: (){
-        Navigator.of(context).push(CupertinoPageRoute(builder: ((context) => home())));
-       
+      onPressed: () async {
+        main();
+        
       },
+      /*{
+        Navigator.of(context).push(CupertinoPageRoute(builder: ((context) => home()))); 
+      },*/
       child: Text("Iniciar Sesion",
         style: TextStyle(
           color: Colors.white,
           fontSize: 18,
         ), 
       ),
+      
     ),
   );
 }
@@ -235,18 +331,7 @@ Widget buildSignupBtn(){
                     ]
                   )
                 ),
-            ),
-            Positioned(
-              top: 24,
-              left: 0,
-              child: Image.asset('assets/diseño6.png', height: 100,),
-            ),
-            Positioned(
-              top: 550,
-              left: 200,
-              child: Image.asset('assets/diseño4.png')
-            ),
-             SingleChildScrollView(
+                child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(
                   horizontal: 25,
@@ -258,21 +343,32 @@ Widget buildSignupBtn(){
                     Text("Bienvenido a \n Face_Recon", 
                       style: TextStyle(
                         color: Colors.white, 
-                        fontSize: 40, 
+                        fontSize: 50, 
                         fontWeight: FontWeight.bold
                       ),
                     ),
-                    SizedBox(height: 50),
+                    SizedBox(height: 30),
                         buildEmail(),
                          buildPassword(),
-                    SizedBox(height: 10),
-                        buildForgotpasswd(),
-                      //  buildRememberCb(),
+                         buildForgotpasswd(),
+                    SizedBox(height: 15),
                         buildLoginBtn(),
                         buildSignupBtn()
                   ]
                 ),
                ),
+            ),
+            /*
+            Positioned(
+              top: 24,
+              left: 0,
+              child: Image.asset('assets/diseño6.png', height: 100,),
+            ),
+            Positioned(
+              top: 550,
+              left: 200,
+              child: Image.asset('assets/diseño4.png')
+            ),*/
             ],
           ),
         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:Face_Recon/src/pages/User.dart';
-//import 'package:app/src/pages/Configurations.dart';
+import 'dart:convert';
+import 'package:app/src/pages/Login.dart';
+import 'package:app/src/pages/User.dart';
+import 'package:http/http.dart' as http;
+//import 'package:app/data/Logout.dart';
 
 class home extends StatefulWidget{
   @override
@@ -73,6 +75,34 @@ class _homeState extends State<home>{
       _selectedIndex = index;
     });
   }
+
+   main() async {
+    var headers = {"Content-Type": "application/json", "Accept" : "application/json"};
+     
+    var request = http.Request(
+      'POST',
+      Uri.parse(
+        "https://face-recon.onrender.com/api/logout"
+      ) 
+    );
+    request.body = json.encode(
+      {
+       
+      }
+    );
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200){
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  LoginScreen()));      
+    // Navigator.push(context, MaterialPageRoute(builder: ((context) => home())));
+    }else{
+      print(response.reasonPhrase);
+    }
+   
+
+  }
+
   @override
   Widget build (BuildContext context){
     return Scaffold(
@@ -86,7 +116,17 @@ class _homeState extends State<home>{
         ),
        ),
        automaticallyImplyLeading: false,
-       toolbarHeight: 150,
+       leading: Builder(
+          builder: (context){
+            return IconButton( 
+              icon: Icon(Icons.notes_rounded),
+               onPressed: (){
+                 Scaffold.of(context).openDrawer();
+              }
+            );
+          }
+        ),
+       toolbarHeight: 100,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(35),
@@ -96,10 +136,12 @@ class _homeState extends State<home>{
         
       ),
       
-      endDrawer: Drawer(
+     
+     
+      drawer: Drawer(
         backgroundColor: Color(0xff171717),
         child: ListView(
-          children: const [
+          children: <Widget> [
             SizedBox(
                 height: 300,
               child: DrawerHeader(
@@ -115,7 +157,7 @@ class _homeState extends State<home>{
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                       right: 230.5,
+                       left: 230.5,
                       ),
                       child: Icon(
                         Icons.cancel, 
@@ -133,19 +175,19 @@ class _homeState extends State<home>{
                       padding: EdgeInsets.only(
                         left: 15,
                       ),
-                      child: ListTile(
-                        title: Text("Ricardo Oscar Perez Ortiz",
-                          style:  TextStyle(
-                            color: Colors.white, 
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal
-                          ),
-                        ),
-                      ),
+                      /*child: FutureBuilder<Post>(
+                        future: post,
+                        builder: (context, snapshot){
+                          if (snapshot.hasData){
+                            return Text(snapshot.data?.username);
+                          }else if (snapshot.hasError){
+                            return Text("${snapshot.error}");
+                          }
+                        }
+                      ),*/
                     ),
-                    
                   ],
-                )
+                ),
               ),
             ),
            
@@ -169,8 +211,11 @@ class _homeState extends State<home>{
                 fontWeight: FontWeight.normal
                 ),
               ),
-              leading: Icon(Icons.logout, color: Colors.white, size: 35,),
-            )
+              leading: Icon(Icons.logout, color: Colors.white, size: 35),
+              onTap: () {
+                main();
+              },
+            ),
           ],
         ),
       ),
@@ -184,11 +229,6 @@ class _homeState extends State<home>{
         ),*/ 
       body: Stack(
         children: [
-          Positioned(
-            top: 120,
-            left: 30,
-               child: Image.asset('assets/diseño4.png'),
-          ),
           Column(
             children: [
               if(_selectedIndex == 0)
@@ -199,7 +239,7 @@ class _homeState extends State<home>{
                  physics: AlwaysScrollableScrollPhysics(),
                  padding: EdgeInsets.symmetric(
                    horizontal: 50,
-                   vertical: 120
+                   vertical: 150
                   ),
                  child: Column(
                    mainAxisAlignment: MainAxisAlignment.center,
@@ -255,6 +295,7 @@ class _homeState extends State<home>{
               ),
             ],
           ),*/
+    
       bottomNavigationBar: Container(
             padding: EdgeInsets.symmetric(horizontal: 50),
             margin: EdgeInsets.only(bottom: 20),
@@ -347,4 +388,4 @@ class _homeState extends State<home>{
                       ),
                     ),
                   ),*/
-                  
+

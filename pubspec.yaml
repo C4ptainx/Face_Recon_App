@@ -1,4 +1,4 @@
-name: Face_Recon
+name: app
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -35,6 +35,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  rive: ^0.11.3
+  hidden_drawer_menu: ^3.0.1
+  http: ^0.13.3
+  rive_splash_screen: ^0.1.1
+  shared_preferences: ^2.1.2
+  flutter_zoom_drawer: ^3.1.1
+  
 
 dev_dependencies:
   flutter_test:
@@ -61,14 +68,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - assets/logo.png
-      - assets/diseño.png
-      - assets/diseño1.png
-      - assets/diseño2.png
-      - assets/diseño3.png
-      - assets/diseño4.png
-      - assets/diseño5.png
-      - assets/diseño6.png
       - assets/usuarios.png
+      - assets/loading-tech.riv
+      - assets/logo.riv
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
