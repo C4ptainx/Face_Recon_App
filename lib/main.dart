@@ -1,10 +1,15 @@
 import 'dart:async';
 //import 'dart:ui';
+import 'package:app/Inicio.dart';
 import 'package:app/src/pages/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:app/src/pages/Login.dart';
 import 'package:rive/rive.dart';
+//import 'package:app/Inicio.dart';
+
 //import 'package:rive_splash_screen/rive_splash_screen.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +28,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
+//numero de colaborador de 8 digitos 
 class SplashScreen extends StatefulWidget{
   @override
   _SplashScreen createState() => _SplashScreen();
@@ -36,8 +41,8 @@ class _SplashScreen extends State<SplashScreen>{
   void initState() {
     // TODO: implement setState
     super.initState();
-    Timer(Duration(seconds: 10),(){
-      Navigator.of(context). pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen() ));
+    Timer(Duration(seconds: 10),() {
+      Navigator.of(context). pushReplacement(MaterialPageRoute(builder: (_) => Inicio() ));
     }
     );
   }

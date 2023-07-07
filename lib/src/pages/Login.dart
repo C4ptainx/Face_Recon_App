@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen>{
     var request = http.Request(
       'POST',
       Uri.parse(
-        //"https://face-recon.onrender.com/api/login"
         "https://backend-face.onrender.com/api/user/login/"
       ) 
     );
@@ -38,11 +37,7 @@ class _LoginScreenState extends State<LoginScreen>{
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200){
-
-     // guardar(email);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => home() ));//print(await response.stream.bytesToString());
-    
-    // Navigator.push(context, MaterialPageRoute(builder: ((context) => home())));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => home() ));
     }else{
       showDialog(
         context: context,
@@ -73,15 +68,11 @@ class _LoginScreenState extends State<LoginScreen>{
       );
     }
   }
-  
-//email: admin@edu.utc.com
-//password: admin1234
-/*"email":"pedro@utc.edu.mx",
-    "password":"pedro123456",*/
-
 bool _passwordVisible = false;
+
   Widget buildEmail(){
   return Column(
+    
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Text("", 
@@ -91,21 +82,22 @@ bool _passwordVisible = false;
           fontWeight: FontWeight.bold
         ),
       ),
-      SizedBox(height: 10,),
+      SizedBox(height: 0),
       Container(
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
-          color: Colors.transparent, 
+          color:  Color(0xFF3D737F),//Colors.transparent, 
           borderRadius:BorderRadius.circular(10),
-          boxShadow: [
+         /* boxShadow: [
             BoxShadow(
               color: Colors.black26,
               blurRadius: 6,
               offset: Offset(0, 2)
             )
-          ]
+          ]*/
         ),
         height: 60,
+        width: 350,
         child: TextField(
           onChanged: (value) => {email = value},
           keyboardType: TextInputType.emailAddress,
@@ -113,15 +105,16 @@ bool _passwordVisible = false;
             color: Colors.white
           ),
           decoration: InputDecoration(
+             border: InputBorder.none,
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.white
+                color: Colors.transparent,
                 ),
               borderRadius: BorderRadius.all(
                 Radius.circular(15)
                 )
               ),
-            contentPadding: EdgeInsets.only(top: 14),
+            contentPadding: EdgeInsets.only(top: 15),
             prefixIcon: Icon(
               Icons.email,
               color: Color(0xff455a64),
@@ -153,17 +146,18 @@ Widget buildPassword(){
       Container(
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
-          color: Colors.transparent,  
+          color:  Color(0xFF3D737F),//Colors.transparent, 
           borderRadius:BorderRadius.circular(10),
-          boxShadow: [
+         /* boxShadow: [
             BoxShadow(
               color: Colors.black26,
               blurRadius: 6,
               offset: Offset(0, 2)
             )
-          ]
+          ]*/
         ),
         height: 60,
+        width: 350,
         child: TextField(
          onChanged: (value) => {password = value},
           obscureText: !_passwordVisible,
@@ -171,9 +165,10 @@ Widget buildPassword(){
             color: Colors.white
           ),
           decoration: InputDecoration(
+             border: InputBorder.none,
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.white
+                color: Colors.transparent
                 ),
               borderRadius: BorderRadius.all(
                 Radius.circular(15)
@@ -255,11 +250,11 @@ Widget buildForgotpasswd(){
 
 Widget buildLoginBtn(){
   return Container(
-    padding: EdgeInsets.symmetric(vertical: 25),
+    padding: EdgeInsets.symmetric(vertical: 15),
     width: double.infinity,
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: Colors.deepPurpleAccent.shade700,
+        primary: Color.fromARGB(255, 5, 35, 45),//Colors.deepPurpleAccent.shade700,
         elevation: 2, 
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(
@@ -268,11 +263,7 @@ Widget buildLoginBtn(){
       ),
       onPressed: () async {
         main();
-        
       },
-      /*{
-        Navigator.of(context).push(CupertinoPageRoute(builder: ((context) => home()))); 
-      },*/
       child: Text("Iniciar Sesion",
         style: TextStyle(
           color: Colors.white,
@@ -302,6 +293,7 @@ Widget buildSignupBtn(){
 @override
   Widget build(BuildContext context){
     return Scaffold(
+      backgroundColor: Color(0xFF07161B),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(
@@ -310,7 +302,7 @@ Widget buildSignupBtn(){
             Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: BoxDecoration(
+             /* decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -321,45 +313,65 @@ Widget buildSignupBtn(){
                       Color(0xff171717),
                     ]
                   )
-                ),
+                ),*/
                 child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(
-                  horizontal: 25,
-                  vertical: 120
+                  horizontal: 15,
+                  vertical: 190
                 ),
                  child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Bienvenido a \n Face_Recon", 
-                      style: TextStyle(
-                        color: Colors.white, 
-                        fontSize: 50, 
-                        fontWeight: FontWeight.bold
+                    Row(
+                     mainAxisAlignment: MainAxisAlignment.center, // Centra la imagen en el Row
+                     children: <Widget>[
+                      Padding(padding: EdgeInsets.only(
+                        left: 25
+                      )),
+                      Expanded(
+                         child: Image.asset(
+                           'assets/name.png', 
+                            width: 350, 
+                          ),
+                        ),
+                      ],
+                    ), 
+                    SizedBox(height: 50),
+                   /* ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+
+                    ),
+                  child: Card(
+                      color: Color(0xFF3D737F),//Color.fromARGB(255, 31, 30, 30),
+                      child: SizedBox(
+                        width: 350,
+                        height: 230,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            buildEmail(),
+                            buildPassword(),
+                          ],
+                        ),
                       ),
                     ),
-                    SizedBox(height: 30),
-                        buildEmail(),
-                         buildPassword(),
-                         buildForgotpasswd(),
-                    SizedBox(height: 15),
+                  ),*/
+                    SizedBox(height: 10),
+                    buildEmail(),
+                    buildPassword(),
+                        buildForgotpasswd(),
+                    SizedBox(height: 40),
                         buildLoginBtn(),
                         buildSignupBtn()
                   ]
                 ),
                ),
             ),
-            /*
-            Positioned(
-              top: 24,
-              left: 0,
-              child: Image.asset('assets/diseño6.png', height: 100,),
-            ),
-            Positioned(
-              top: 550,
-              left: 200,
-              child: Image.asset('assets/diseño4.png')
-            ),*/
             ],
           ),
         ),

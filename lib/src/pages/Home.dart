@@ -1,10 +1,10 @@
-//import 'package:app/main.dart';
 import 'package:flutter/material.dart';
-//import 'dart:convert';
 import 'package:app/src/pages/Login.dart';
 import 'package:app/src/pages/User.dart';
-//import 'package:http/http.dart' as http;
+import 'package:app/src/pages/AsistenciaR.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:camera/camera.dart';
 
 class home extends StatefulWidget{
   @override
@@ -14,19 +14,23 @@ class _homeState extends State<home>{
     // ignore: override_on_non_overriding_member
   Widget buildRasistencia(){
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 25),
+      padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Colors.deepPurpleAccent.shade700,
+          primary: Color(0xFF07161B),//Colors.deepPurpleAccent.shade700,
           elevation: 2, 
           padding: EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
         ),
-        onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> home()));
+        onPressed: () async {
+            WidgetsFlutterBinding.ensureInitialized();
+            final cameras = await availableCameras();
+            final firstCamera = cameras.first;
+            Navigator.push(context,MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera)));
+          //Navigator.push(context, MaterialPageRoute(builder: (context)=> home()));
         },
         child: Text("Registrar asistencia",
           style: TextStyle(
@@ -40,11 +44,11 @@ class _homeState extends State<home>{
 
   Widget buildVasistencia(){
    return Container(
-    padding: EdgeInsets.symmetric(vertical: 25),
+    padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
     width: double.infinity,
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: Colors.deepPurpleAccent.shade700,
+        primary: Color(0xFF07161B),//Colors.deepPurpleAccent.shade700,
         elevation: 2, 
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(
@@ -64,7 +68,7 @@ class _homeState extends State<home>{
   );
   } 
 
-  int _selectedIndex = 0;
+ int _selectedIndex = 0;
   List<Widget>_widgetoptions= <Widget>[
     Text(""),
     user(),
@@ -78,8 +82,7 @@ class _homeState extends State<home>{
   // Función para realizar el logout
 Future<void> logout(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.remove('token'); // Elimina el token del almacenamiento local
-  // Opcional: Realizar otras tareas de limpieza o redireccionar a la pantalla de inicio de sesión
+  await prefs.remove('token'); 
   Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),(route) => false,);
 }
   
@@ -87,9 +90,19 @@ Future<void> logout(BuildContext context) async {
   @override
   
   Widget build (BuildContext context){
-    return Scaffold(
-      backgroundColor: Color(0xff171717),
-      appBar: AppBar(
+    return MaterialApp(
+     // backgroundColor: Color(0xff171717),
+     debugShowCheckedModeBanner: false,
+      home: Hoome(
+        buildRasistencia: buildRasistencia,
+        buildVasistencia: buildVasistencia,
+        selectedIndex: _selectedIndex,
+        widgetoptions: _widgetoptions,
+        onItem: _onItem,
+        logout: logout,
+       
+      ),
+   /*   appBar: AppBar(
        backgroundColor: Colors.grey.shade900,
        title: Text("Bienvenido \n ",
         style: TextStyle(
@@ -116,11 +129,8 @@ Future<void> logout(BuildContext context) async {
           )
         ), 
         
-      ),
-      
-     
-     
-      drawer: Drawer(
+      ),  */  
+   /*   drawer: Drawer(
         backgroundColor: Color(0xff171717),
         child: ListView(
           children: <Widget> [
@@ -157,16 +167,6 @@ Future<void> logout(BuildContext context) async {
                       padding: EdgeInsets.only(
                         left: 15,
                       ),
-                      /*child: FutureBuilder<Post>(
-                        future: post,
-                        builder: (context, snapshot){
-                          if (snapshot.hasData){
-                            return Text(snapshot.data?.username);
-                          }else if (snapshot.hasError){
-                            return Text("${snapshot.error}");
-                          }
-                        }
-                      ),*/
                     ),
                   ],
                 ),
@@ -200,7 +200,8 @@ Future<void> logout(BuildContext context) async {
             ),
           ],
         ),
-      ),
+      ),*/
+
       /* ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
@@ -209,7 +210,7 @@ Future<void> logout(BuildContext context) async {
             bottomRight: Radius.circular(30),
           ),
         ),*/ 
-      body: Stack(
+  /*   body: Stack(
         children: [
           Column(
             children: [
@@ -241,55 +242,9 @@ Future<void> logout(BuildContext context) async {
           )
         ],
       ),
-
-
-        /*children: [
-          if(_selectedIndex == 0)
-          Expanded(
-            child: Column(
-              children: [
-                SingleChildScrollView(
-                 physics: AlwaysScrollableScrollPhysics(),
-                 padding: EdgeInsets.symmetric(
-                   horizontal: 25,
-                   vertical: 120
-                  ),
-                 child: Column(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: <Widget>[
-                      SizedBox(height: 50),
-                      if(_selectedIndex == 0)buildRasistencia(),
-                      SizedBox(height: 20),
-                      if(_selectedIndex == 0)buildVasistencia(),
-                    ]
-                 ),
-                ),
-              ],
-            ),
-          ),
-          if(_selectedIndex !=0) Expanded(child: _widgetoptions[_selectedIndex]),
-        ]*/
-      
-     /*Stack(
-            children: [
-              Positioned.fill(
-               child: Image.asset('assets/diseño2.png'),
-              ),
-            ],
-          ),*/
-    
       bottomNavigationBar: Container(
             padding: EdgeInsets.symmetric(horizontal: 50),
             margin: EdgeInsets.only(bottom: 20),
-            /*decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30), 
-                topLeft: Radius.circular(30),
-              ),
-             /*boxShadow: [
-                BoxShadow(color: Colors.grey.shade300, spreadRadius: 0, blurRadius: 30),
-              ],*/
-            ),*/
             child: ClipRRect(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
@@ -307,13 +262,7 @@ Future<void> logout(BuildContext context) async {
                   BottomNavigationBarItem(
                     icon: Icon(Icons.account_circle),
                     label: "Perfil",
-                    
                   ),
-                 /* BottomNavigationBarItem(
-                    icon: Icon(Icons.settings),
-                    label: "Configuraciones",
-                    
-                  )*/
                 ],
                 
                 currentIndex: _selectedIndex,
@@ -323,53 +272,269 @@ Future<void> logout(BuildContext context) async {
               ),
             
             ),
-          ),
+          ),*/
+    );
+  }
+}
+class Hoome extends StatelessWidget{
+  final Widget Function() buildRasistencia;
+  final Widget Function() buildVasistencia;
+  final int selectedIndex;
+  final List <Widget> widgetoptions;
+  final Function(int) onItem;
+  final void Function(BuildContext) logout;
+  Hoome (
+    {
+      required this.buildRasistencia, 
+      required this.buildVasistencia, 
+      required this.onItem, 
+      required this.selectedIndex, 
+      required this.widgetoptions,
+      required this.logout
+    }
+  );
+
+  @override
+  Widget build(BuildContext context){
+    return ZoomDrawer(
+      menuScreen: Menu(
+        logout: logout,
+      ), 
+        mainScreen: Main(
+          buildRasistencia: buildRasistencia, 
+          buildVasistencia: buildVasistencia, 
+          selectedIndex: selectedIndex,
+          onItem: onItem,
+          widgetoptions: widgetoptions
+        ),
+        borderRadius: 24,
+        showShadow: true,
+        drawerShadowsBackgroundColor: Color(0xFF3D737F),//Colors.grey.shade700,
+        menuBackgroundColor: Color(0xFF07161B),//Colors.grey.shade900,
     );
   }
 }
 
+class Main extends StatelessWidget{
+  final Widget Function() buildRasistencia; 
+  final Widget Function() buildVasistencia; 
+  final int selectedIndex;
+  final List <Widget> widgetoptions;
+  final Function(int) onItem;
+ 
+  Main(
+    {
+      required this.buildRasistencia, 
+      required this.buildVasistencia,
+      required this.selectedIndex,
+      required this.onItem,
+      required this.widgetoptions,
+    }
+  );
 
+  @override
+  Widget build (BuildContext context){
+    return Scaffold(
+       backgroundColor: Color(0xFF3D737F) ,//Color(0xff171717),
+      appBar: AppBar(
+        backgroundColor: Color(0xFF07161B), //Colors.grey.shade900,
+       title: Text("Bienvenido \n ",
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+       ),
+       automaticallyImplyLeading: false,
+       leading: IconButton(
+        onPressed: ()=>ZoomDrawer.of(context)!.toggle(), 
+        icon: Icon(Icons.notes_rounded)
+        ),
+       toolbarHeight: 100,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(35),
+            bottomRight: Radius.circular(35),
+          )
+        ), 
+      ),
+       body: Stack(
+        children: [
+          Positioned(
+            bottom: 310,
+            right: 180,
+            child: Image.asset('assets/diseño1.png'),
+          ),
+          Positioned(
+            top: 360,
+            left: 240,
+            child: Image.asset('assets/diseño2.png'),
+          ),
+          Column(
+            children: [
+              if(selectedIndex == 0)
+              
+          Expanded(
+            child: Column(
+              children: [
+                
+                SingleChildScrollView(
+                 physics: AlwaysScrollableScrollPhysics(),
+                 padding: EdgeInsets.symmetric(
+                   horizontal: 25,
+                   vertical: 200
+                  ),
+                
+                 child: Column(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    
+                    SizedBox(height: 20),
+                    if(selectedIndex == 0)
+                    buildRasistencia(),
+                    SizedBox(height: 20),
+                    if(selectedIndex == 0)
+                    buildVasistencia(),
+                    ]
+                 ),
+                ),
+              ],
+            ),
+          ),
+         
+          if(selectedIndex !=0) 
+            Expanded(
+              child: widgetoptions[
+               selectedIndex
+              ]
+            ),
+          ],
+        )
+      ],
+    ),
+      bottomNavigationBar: Container(
+            padding: EdgeInsets.symmetric(horizontal: 50),
+            margin: EdgeInsets.only(bottom: 20),
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)
+              ),
+              child: BottomNavigationBar(
+                backgroundColor: Color(0xFF07161B),//Colors.grey.shade900,
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: "Home",  
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.account_circle),
+                    label: "Perfil",
+                  ),
+                ],
+               currentIndex: selectedIndex,
+               onTap: onItem,
+                selectedItemColor: Color(0xFF3D737F) ,//Colors.deepPurpleAccent.shade700,
+                unselectedItemColor: Colors.white30,
+              ),
+            
+            ),
+          )
+    );
+  }
+}
 
-/*Card(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                       
-                          buildRasistencia(),
-                          buildVasistencia(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                           children: [
-                             SizedBox(
-                              width: 300,
-                              height: 200,
-                             ),
-                            
+class Menu extends StatelessWidget{
+ final void Function(BuildContext) logout;
 
-                           ],
-                          ),
-                        ],
-                      ),
-                    ),*/
+ Menu({required this.logout});
 
- /*child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
-                    child: Card(
-                      child: SizedBox(
-                        width: 300,
-                        height: 250,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                           
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),*/
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      backgroundColor: Color(0xFF07161B),//Color(0xff212121),
+      body: ListView(
+        children: <Widget>[
+          Column(
+            children: [
+              Padding(padding: EdgeInsets.only(right: 180),
+              child: IconButton(
+                onPressed: ()=>ZoomDrawer.of(context)!.close(), 
+                  icon: Icon(
+                    Icons.close_rounded,
+                    color: Colors.white, 
+                    size: 35
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 100,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 40),
+                child: CircleAvatar(
+                radius: 60,
+                backgroundImage: AssetImage('assets/usuarios.png'),
+                backgroundColor: Colors.grey.shade600,
+              ),
+              ),
+              
+              SizedBox(height: 30),
+              ListTile(
+                title: Text("nombre usuario o correo", style: TextStyle(
+                color: Colors.white, 
+                fontSize: 20, 
+                fontWeight: FontWeight.bold
+              ),
+              ),
+              ),
+              SizedBox(height: 35),
+            ],
+          ),
+          ListTile(
+            leading: Icon(Icons.support_agent_rounded, color: Colors.white, size: 35,),
+            title: Text(
+              "Soporte", 
+              style: TextStyle(
+                color: Colors.white, 
+                fontSize: 20, 
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            
+          ),
+          SizedBox(height: 300,),
+          Padding(padding: EdgeInsets.only(left: 15),
+          child: Text("Version 1.0.0",style: TextStyle(color: Colors.grey.shade300, fontSize: 15 ),),
+          ),
+          Divider(
+            thickness: 1,
+            indent: 20,
+            endIndent: 30,
+            color: Colors.grey.shade100,
+          ),
+           ListTile(
+            leading: Icon(Icons.logout_sharp, color: Colors.white, size: 35,),
+            title: Text(
+              "Cerrar Sesión", 
+              style: TextStyle(
+                color: Colors.white, 
+                fontSize: 20, 
+                fontWeight: FontWeight.bold
+              ),
+              
+            ),
+            onTap: () {
+              logout(context);
+            },
+          )
+        ],
+      ),
+    );
+  }
 
+  static of(BuildContext context) {}
+}
